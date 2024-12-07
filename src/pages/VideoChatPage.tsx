@@ -1,4 +1,4 @@
-import VideoContainer from "../containers/VidoeContainer";
+import VideoContainer from "../containers/VideoContainer";
 
 const VideoChatPage = () => {
   return <VideoContainer />;

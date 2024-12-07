@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CustomLoader from "../components/loader/customLoader";
 import { PrivateRouter } from "./PrivateRoutes";
+import CommonHeader from "../components/common/CommonHearder";
 
 const HomePage = lazy(() => import("../pages/HomePage"));
 const LoginPage = lazy(() => import("../pages/LoginPage"));
@@ -12,6 +13,7 @@ export const PublicRouter = () => {
   return (
     <Suspense fallback={<CustomLoader />}>
       <BrowserRouter>
+        <CommonHeader />
         <Routes>
           {/* 홈 페이지는 public한 라우트로 설정 */}
           <Route path="/" element={<HomePage />} />

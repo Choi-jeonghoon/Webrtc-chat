@@ -1,11 +1,9 @@
-import CommonHeader from "../components/common/CommonHearder";
 import HomeContainer from "../containers/HomeContainer";
 import { Box } from "@mui/material";
 
 const HomePage = () => {
   return (
     <>
-      <CommonHeader />
       <Box
         sx={{
           display: "flex",

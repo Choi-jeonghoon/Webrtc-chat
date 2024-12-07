@@ -1,0 +1,11 @@
+/* html과 body에 height을 설정 */
+html,
+body {
+  height: 100%; /* 전체 페이지 높이를 채움 */
+  margin: 0; /* 기본 margin을 없애기 위해 설정 */
+}
+
+#root {
+  height: 100%;
+  background: rgba(172, 198, 174, 0.498);
+}

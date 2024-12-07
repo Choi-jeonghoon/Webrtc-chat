@@ -23,7 +23,7 @@ const useAuth = () => {
       setAuth({ isAuthenticated: false, token: "" });
     }
 
-    // if (userToken) {
+    // if (userToken===???) {
     //   setAuth({ isAuthenticated: true, token: userToken });
     // } else {
     //   setAuth({ isAuthenticated: false, token: "" });

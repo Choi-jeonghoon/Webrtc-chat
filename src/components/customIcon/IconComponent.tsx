@@ -1,8 +1,9 @@
+import { SxProps, Theme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 
 interface IconButtonProps {
   onClick: () => void;
-  position?: { top: number; right: number }; // 기본적인 위치 조정
+  position?: { top?: number; right?: number; left?: number }; // 기본적인 위치 조정
   color?:
     | "inherit"
     | "default"
@@ -12,25 +13,30 @@ interface IconButtonProps {
     | "info"
     | "success"
     | "warning";
+  edge?: "end" | "start";
+  sx?: SxProps<Theme>;
   children: React.ReactNode;
 }
 
-const CloseIconButton = ({
+const IconCustom = ({
   onClick,
-  position = { top: 8, right: 25 },
+  edge = "end",
+  position = { top: 0, right: 0, left: 0 },
   color = "inherit",
+  sx,
   ...props
 }: IconButtonProps) => {
   return (
     <IconButton
-      edge="end"
+      edge={edge}
       color={color}
       onClick={onClick}
       aria-label="close"
       sx={{
-        position: "absolute",
-        right: position.right,
         top: position.top,
+        right: position.right,
+        left: position.left,
+        ...sx,
       }}
       {...props}
     >
@@ -39,4 +45,4 @@ const CloseIconButton = ({
   );
 };
 
-export default CloseIconButton;
+export default IconCustom;

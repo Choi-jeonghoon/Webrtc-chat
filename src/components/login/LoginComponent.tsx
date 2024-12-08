@@ -44,13 +44,11 @@ const LoginComponent = () => {
         </Typography>
 
         <CommonInput
-          label="이메일"
           type="email"
           placeholder="이메일을 입력하세요"
           sx={{ mb: 3, width: "60%" }}
         />
         <CommonInput
-          label="패스워드"
           type="password"
           placeholder="패스워드를 입력하세요"
           sx={{ mb: 3, width: "60%" }}

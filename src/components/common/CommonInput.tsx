@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 
 interface CommonInputProps {
-  label: string;
+  label?: string;
   type: string;
   placeholder: string;
   sx?: object;

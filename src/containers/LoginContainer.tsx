@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import LoginComponent from "../components/login/loginComponent";
+import LoginComponent from "../components/login/LoginComponent";
 
 const LoginContainer = () => {
   return (

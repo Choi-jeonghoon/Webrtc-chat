@@ -1,16 +1,11 @@
-import { Box } from "@mui/material";
 import LoginComponent from "../components/login/LoginComponent";
+import LayoutComponent from "../components/layout/LayoutComponent";
 
 const LoginContainer = () => {
   return (
-    <Box
-      sx={{
-        width: "100%",
-        mt: 9.5,
-      }}
-    >
+    <LayoutComponent>
       <LoginComponent />
-    </Box>
+    </LayoutComponent>
   );
 };
 

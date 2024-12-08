@@ -1,16 +1,11 @@
-import { Box } from "@mui/material";
 import HomeComponent from "../components/home/HomeComponent";
+import LayoutComponent from "../components/layout/LayoutComponent";
 
 const HomeContainer = () => {
   return (
-    <Box
-      sx={{
-        width: "100%",
-        mt: 9.5,
-      }}
-    >
+    <LayoutComponent>
       <HomeComponent />
-    </Box>
+    </LayoutComponent>
   );
 };
 

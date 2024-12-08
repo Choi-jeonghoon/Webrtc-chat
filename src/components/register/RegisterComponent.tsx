@@ -2,8 +2,32 @@ import { Box, Button, Typography } from "@mui/material";
 import CommonInput from "../common/CommonInput";
 import Lottie from "lottie-react";
 import registerAnimation from "../../assets/Animation-register.json";
+import { useState } from "react";
 
 const RegisterComponent = () => {
+  const [isVerificationVisible, setVerificationVisible] = useState(false);
+  const [verificationSent, setVerificationSent] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // 비밀번호 보이기 상태
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // 비밀번호 확인 보이기 상태
+
+  const handleSendVerification = () => {
+    setVerificationVisible(true); // 인증번호 입력 필드 표시
+    setVerificationSent(true); // 버튼 텍스트 변경
+    console.log("인증번호 발송");
+  };
+
+  const handleVerifyCode = () => {
+    console.log("인증번호 확인");
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  const handleClickShowConfirmPassword = () => {
+    setShowConfirmPassword((prev) => !prev);
+  };
+
   return (
     <Box
       sx={{
@@ -77,19 +101,18 @@ const RegisterComponent = () => {
         </Box>
 
         <CommonInput
-          type="password"
-          placeholder="암호를 입력하세요"
-          sx={{ mb: 3, width: "80%" }}
-        />
-        <CommonInput
-          type="password"
-          placeholder="암호를 확인하세요"
+          type={showPassword ? "text" : "password"}
+          placeholder="비밀번호를 입력하세요"
+          showPasswordToggle={true}
+          onClick={handleClickShowPassword}
           sx={{ mb: 3, width: "80%" }}
         />
 
         <CommonInput
-          type="tel"
-          placeholder="전화번호를 입력하세요"
+          type={showConfirmPassword ? "text" : "password"}
+          placeholder="비밀번호를 확인하세요"
+          showPasswordToggle={true}
+          onClick={handleClickShowConfirmPassword}
           sx={{ mb: 3, width: "80%" }}
         />
 
@@ -97,14 +120,14 @@ const RegisterComponent = () => {
           sx={{ display: "flex", alignItems: "center", width: "80%", mb: 3 }}
         >
           <CommonInput
-            type="text"
-            placeholder="인증번호를 입력하세요"
+            type="tel"
+            placeholder="전화번호를 입력하세요"
             sx={{ flex: 1, mr: 2 }}
           />
           <Button
             variant="contained"
             color="primary"
-            onClick={() => console.log("인증번호 발송")}
+            onClick={handleSendVerification}
             sx={{
               fontSize: "0.9rem",
               padding: "8px 16px",
@@ -114,9 +137,36 @@ const RegisterComponent = () => {
               },
             }}
           >
-            인증번호 발송
+            {verificationSent ? "인증번호 재발송" : "인증번호 발송"}
           </Button>
         </Box>
+
+        {isVerificationVisible && (
+          <Box
+            sx={{ display: "flex", alignItems: "center", width: "80%", mb: 3 }}
+          >
+            <CommonInput
+              type="text"
+              placeholder="인증번호를 입력하세요"
+              sx={{ flex: 1, mr: 2 }}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleVerifyCode}
+              sx={{
+                fontSize: "0.9rem",
+                padding: "8px 16px",
+                background: "#4caf50",
+                "&:hover": {
+                  background: "#388e3c",
+                },
+              }}
+            >
+              인증번호 확인
+            </Button>
+          </Box>
+        )}
 
         <Button
           variant="contained"

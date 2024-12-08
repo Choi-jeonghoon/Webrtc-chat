@@ -1,13 +1,23 @@
-import { TextField } from "@mui/material";
+import { TextField, InputAdornment, IconButton } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface CommonInputProps {
   label?: string;
   type: string;
   placeholder: string;
   sx?: object;
+  onClick?: () => void;
+  showPasswordToggle?: boolean;
 }
 
-const CommonInput = ({ label, type, placeholder, sx }: CommonInputProps) => {
+const CommonInput = ({
+  label,
+  type,
+  placeholder,
+  sx,
+  onClick,
+  showPasswordToggle = false,
+}: CommonInputProps) => {
   return (
     <TextField
       label={label}
@@ -16,8 +26,14 @@ const CommonInput = ({ label, type, placeholder, sx }: CommonInputProps) => {
       placeholder={placeholder}
       sx={sx}
       slotProps={{
-        htmlInput: {
-          placeholder: placeholder,
+        input: {
+          endAdornment: showPasswordToggle ? (
+            <InputAdornment position="end">
+              <IconButton onClick={onClick}>
+                {type === "password" ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ) : null,
         },
       }}
     />

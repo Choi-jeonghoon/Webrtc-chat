@@ -16,7 +16,7 @@ const CommonHeader = () => {
   };
 
   const handleSignup = () => {
-    navigate("/signup");
+    navigate("/register");
   };
 
   const handleLogout = () => {

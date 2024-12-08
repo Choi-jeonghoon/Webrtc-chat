@@ -1,5 +1,12 @@
+import LayoutComponent from "../components/layout/LayoutComponent";
+import RegisterComponent from "../components/register/RegisterComponent";
+
 const RegisterContainer = () => {
-  return <div>RegisterContainer</div>;
+  return (
+    <LayoutComponent>
+      <RegisterComponent />
+    </LayoutComponent>
+  );
 };
 
 export default RegisterContainer;

@@ -18,7 +18,7 @@ export const PublicRouter = () => {
           {/* 홈 페이지는 public한 라우트로 설정 */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/Register" element={<RegisterPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
           {/* 특정 경로는 PrivateRouter를 통해 인증된 사용자만 접근 */}
           <Route

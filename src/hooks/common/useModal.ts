@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "./auth/useAuth";
+import useAuth from "../auth/useAuth";
 
 const useModal = () => {
   const [openModal, setOpenModal] = useState(false); //모달창 여부

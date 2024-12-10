@@ -5,6 +5,7 @@ import registerAnimation from "../../assets/Animation-register.json";
 import { useState } from "react";
 import useRegister from "../../hooks/auth/useRegister";
 import ConfirmModal from "../modal/ConfirmModall";
+import useEmailCheck from "../../hooks/user/useEmailCheck";
 
 const RegisterComponent = () => {
   const [isVerificationVisible, setVerificationVisible] = useState(false);
@@ -28,6 +29,8 @@ const RegisterComponent = () => {
     isModalOpen,
     closeModal,
   } = useRegister();
+
+  const { isButtonDisabled, isEmailValid, handleEmailCheck } = useEmailCheck();
 
   const handleSendVerification = () => {
     setVerificationVisible(true); // 인증번호 입력 필드 표시
@@ -109,13 +112,26 @@ const RegisterComponent = () => {
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => console.log("이메일 중복 체크")}
+            onClick={() => handleEmailCheck(email)}
+            disabled={isButtonDisabled}
             sx={{
               fontSize: "0.9rem",
               padding: "8px 16px",
-              background: "#4caf50",
+              background: isButtonDisabled
+                ? "#ccc"
+                : isEmailValid === false
+                ? "#f44336" //
+                : isEmailValid === true
+                ? "#0b0bf6aa"
+                : "#4caf50",
               "&:hover": {
-                background: "#388e3c",
+                background: isButtonDisabled
+                  ? "#ccc"
+                  : isEmailValid === false
+                  ? "#d32f2f"
+                  : isEmailValid === true
+                  ? "#388e3c"
+                  : "#388e3c",
               },
             }}
           >

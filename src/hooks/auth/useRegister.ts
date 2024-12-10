@@ -7,12 +7,12 @@ const useRegister = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   //모달 상태관리
-  const [modalMessage, setModalMessage] = useState(""); // 모달 메시지 상태
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열기/닫기 상태
+  const [modalMessage, setModalMessage] = useState<string>(""); // 모달 메시지 상태
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 모달 열기/닫기 상태
   const navigate = useNavigate(); // 페이지 이동을 위한 navigate
 
   const handleRegister = async () => {

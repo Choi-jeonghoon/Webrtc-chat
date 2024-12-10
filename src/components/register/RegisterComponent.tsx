@@ -3,12 +3,31 @@ import CommonInput from "../common/CommonInput";
 import Lottie from "lottie-react";
 import registerAnimation from "../../assets/Animation-register.json";
 import { useState } from "react";
+import useRegister from "../../hooks/auth/useRegister";
+import ConfirmModal from "../modal/ConfirmModall";
 
 const RegisterComponent = () => {
   const [isVerificationVisible, setVerificationVisible] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // 비밀번호 보이기 상태
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // 비밀번호 확인 보이기 상태
+
+  const {
+    name,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    phoneNumber,
+    setPhoneNumber,
+    handleRegister,
+    modalMessage,
+    isModalOpen,
+    closeModal,
+  } = useRegister();
 
   const handleSendVerification = () => {
     setVerificationVisible(true); // 인증번호 입력 필드 표시
@@ -73,6 +92,8 @@ const RegisterComponent = () => {
         <CommonInput
           type="text"
           placeholder="이름을 입력하세요"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           sx={{ mb: 3, width: "80%" }}
         />
         <Box
@@ -81,6 +102,8 @@ const RegisterComponent = () => {
           <CommonInput
             type="email"
             placeholder="이메일을 입력하세요"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             sx={{ flex: 1, mr: 2 }}
           />
           <Button
@@ -103,6 +126,8 @@ const RegisterComponent = () => {
         <CommonInput
           type={showPassword ? "text" : "password"}
           placeholder="비밀번호를 입력하세요"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           showPasswordToggle={true}
           onClick={handleClickShowPassword}
           sx={{ mb: 3, width: "80%" }}
@@ -111,6 +136,8 @@ const RegisterComponent = () => {
         <CommonInput
           type={showConfirmPassword ? "text" : "password"}
           placeholder="비밀번호를 확인하세요"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           showPasswordToggle={true}
           onClick={handleClickShowConfirmPassword}
           sx={{ mb: 3, width: "80%" }}
@@ -122,6 +149,8 @@ const RegisterComponent = () => {
           <CommonInput
             type="tel"
             placeholder="전화번호를 입력하세요"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
             sx={{ flex: 1, mr: 2 }}
           />
           <Button
@@ -171,7 +200,7 @@ const RegisterComponent = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => console.log("회원가입")}
+          onClick={handleRegister}
           sx={{
             width: "80%",
             fontSize: "1rem",
@@ -184,6 +213,12 @@ const RegisterComponent = () => {
         >
           회원가입
         </Button>
+
+        <ConfirmModal
+          message={modalMessage}
+          open={isModalOpen}
+          onClose={closeModal}
+        />
       </Box>
     </Box>
   );

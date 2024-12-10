@@ -1,5 +1,5 @@
 import CustomModal from "../components/modal/CustomModal";
-import useModal from "../hooks/useModal";
+import useModal from "../hooks/common/useModal";
 import { CommonComponentType } from "../types/CommonComponentType";
 
 export const PrivateRouter = ({ children }: CommonComponentType) => {

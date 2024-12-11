@@ -10,12 +10,12 @@ export const checkEmail = async (email: string) => {
 
     // 서버 응답에서 상태를 확인
     if (response.data.status === "success") {
-      console.log("사용 가능한 이메일입니다.");
+      //console.log("사용 가능한 이메일입니다.");
       return response.data; // 성공적인 응답만 반환
     }
 
     // status가 success가 아닌 경우 처리
-    console.log("이미 사용 중인 이메일입니다.");
+    //console.log("이미 사용 중인 이메일입니다.");
     return response.data; // 실패한 응답도 반환
   } catch (e: unknown) {
     // e가 AxiosError 타입인지 확인
@@ -32,11 +32,11 @@ export const checkEmail = async (email: string) => {
       }
 
       // 다른 에러 코드에 대해서만 처리
-      console.error(`Error ${errorCode}: ${errorMessage}`);
+      //console.error(`Error ${errorCode}: ${errorMessage}`);
       return Promise.reject(new Error(errorMessage)); // 다른 오류는 여전히 에러 반환
     } else {
       // 만약 e가 AxiosError가 아니면 다른 오류 처리
-      console.error("알 수 없는 오류 발생", e);
+      //console.error("알 수 없는 오류 발생", e);
       return Promise.reject(new Error("알 수 없는 오류 발생"));
     }
   }

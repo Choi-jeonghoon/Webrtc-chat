@@ -1,6 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { registerUser } from "../../api/user/register";
-import { useNavigate } from "react-router-dom";
+
+import { useRecoilState } from "recoil";
+import {
+  isModalOpenState,
+  modalMessageState,
+} from "../../recoli/atoms/modalState";
 
 const useRegister = () => {
   //입력 상태관리
@@ -11,9 +16,8 @@ const useRegister = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   //모달 상태관리
-  const [modalMessage, setModalMessage] = useState<string>(""); // 모달 메시지 상태
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 모달 열기/닫기 상태
-  const navigate = useNavigate(); // 페이지 이동을 위한 navigate
+  const [, setModalMessage] = useRecoilState(modalMessageState);
+  const [, setIsModalOpen] = useRecoilState(isModalOpenState);
 
   const handleRegister = async () => {
     if (!email || !password || !confirmPassword || !phoneNumber) {
@@ -44,25 +48,6 @@ const useRegister = () => {
     }
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false); // 모달 닫기
-  };
-
-  // 모달 열리고 1초 후에 자동으로 페이지 이동
-  useEffect(() => {
-    if (
-      isModalOpen &&
-      modalMessage === "회원가입이 성공적으로 완료되었습니다!"
-    ) {
-      const timer = setTimeout(() => {
-        navigate("/"); // 홈 페이지로 이동
-        closeModal(); // 모달 닫기
-      }, 2000); // 2초 후에 이동
-
-      return () => clearTimeout(timer);
-    }
-  }, [isModalOpen, modalMessage, navigate]);
-
   return {
     name,
     setName,
@@ -75,9 +60,7 @@ const useRegister = () => {
     phoneNumber,
     setPhoneNumber,
     handleRegister,
-    modalMessage,
-    isModalOpen,
-    closeModal,
+    setIsModalOpen,
   };
 };
 

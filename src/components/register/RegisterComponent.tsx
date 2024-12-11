@@ -6,6 +6,12 @@ import { useState } from "react";
 import useRegister from "../../hooks/auth/useRegister";
 import ConfirmModal from "../modal/ConfirmModall";
 import useEmailCheck from "../../hooks/user/useEmailCheck";
+import { useRecoilValue } from "recoil";
+import {
+  isModalOpenState,
+  modalMessageState,
+} from "../../recoli/atoms/modalState";
+import useModalRedirect from "../../hooks/common/usecModal";
 
 const RegisterComponent = () => {
   const [isVerificationVisible, setVerificationVisible] = useState(false);
@@ -25,12 +31,18 @@ const RegisterComponent = () => {
     phoneNumber,
     setPhoneNumber,
     handleRegister,
-    modalMessage,
-    isModalOpen,
-    closeModal,
+    setIsModalOpen,
   } = useRegister();
 
   const { isButtonDisabled, isEmailValid, handleEmailCheck } = useEmailCheck();
+
+  const modalMessage = useRecoilValue(modalMessageState);
+  const isModalOpen = useRecoilValue(isModalOpenState);
+
+  // useModalRedirect 훅 호출하여 모달이 열리고 2초 후에 페이지를 이동
+  useModalRedirect(isModalOpen, modalMessage, () => {
+    setIsModalOpen(false); // 모달을 닫는 함수
+  });
 
   const handleSendVerification = () => {
     setVerificationVisible(true); // 인증번호 입력 필드 표시
@@ -138,6 +150,11 @@ const RegisterComponent = () => {
           >
             중복 확인
           </Button>
+          <ConfirmModal
+            message={modalMessage}
+            open={isModalOpen}
+            // onClose={closeModal}
+          />
         </Box>
 
         <CommonInput
@@ -234,7 +251,7 @@ const RegisterComponent = () => {
         <ConfirmModal
           message={modalMessage}
           open={isModalOpen}
-          onClose={closeModal}
+          onClose={() => setIsModalOpen(false)}
         />
       </Box>
     </Box>

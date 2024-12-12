@@ -131,24 +131,20 @@ const RegisterComponent = () => {
               fontSize: "0.9rem",
               padding: "8px 16px",
               background: isButtonDisabled
-                ? "#ccc"
+                ? "#ccc" // 비활성화 상태는 회색 고정
                 : isEmailValid === false
-                ? "#f44336" //
-                : isEmailValid === true
-                ? "#0b0bf6aa"
-                : "#4caf50",
+                ? "#f44336" // 유효하지 않은 이메일: 빨간색
+                : "#4caf50", // 기본 초록색
               "&:hover": {
                 background: isButtonDisabled
-                  ? "#ccc"
+                  ? undefined // 비활성화 상태에서는 hover 효과 없음
                   : isEmailValid === false
-                  ? "#d32f2f"
-                  : isEmailValid === true
-                  ? "#388e3c"
-                  : "#388e3c",
+                  ? "#d32f2f" // 유효하지 않은 이메일: hover 빨간색
+                  : "#388e3c", // 기본 초록색 hover
               },
             }}
           >
-            중복 확인
+            {isEmailValid === true ? "사용 가능" : "중복 확인"}
           </Button>
           <ConfirmModal
             message={modalMessage}

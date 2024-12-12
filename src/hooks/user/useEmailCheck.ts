@@ -28,8 +28,6 @@ const useEmailCheck = () => {
       return; // 이메일 형식이 잘못되었으면 서버 요청을 보내지 않음
     }
 
-    setIsButtonDisabled(true); // 버튼 비활성화 (중복 확인 중)
-
     try {
       const result = await checkEmail(email); // API 호출
 
@@ -38,6 +36,7 @@ const useEmailCheck = () => {
         setIsModalOpen(true);
         setModalMessage("사용 가능한 이메일입니다.");
         setIsButtonDisabled(true); // 버튼 비활성화
+        console.log(isButtonDisabled, "버튼 비활성화");
         console.log("사용 가능한 이메일입니다");
       } else if (result.status === "error" && result.errorCode === 409) {
         setIsEmailValid(false);
@@ -49,7 +48,7 @@ const useEmailCheck = () => {
       setIsEmailValid(false);
       setModalMessage("서버 오류가 발생했습니다.");
     } finally {
-      setIsButtonDisabled(isEmailValid === true);
+      setIsModalOpen(true);
     }
   };
 

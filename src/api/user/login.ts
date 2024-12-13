@@ -27,30 +27,20 @@ export const loginUser = async (email: string, password: string) => {
         validateStatus: (status) => {
           return (status >= 200 && status < 300) || status === 401;
         },
+        withCredentials: true, // 쿠키 자동 포함 설정
       }
     );
 
-    // console.log("처음에 오는 값:", res.data); // 응답 데이터 처리
-
     // 서버 응답에서 상태를 확인
-    if (res.data.status === "success" && res.data.data) {
-      const { accessToken, refreshToken } = res.data.data;
-
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      //console.log("로그인 성공:", { accessToken, refreshToken });
-      return { status: "success", accessToken, refreshToken };
+    if (res.data.status === "success") {
+      return { status: "success" }; // 쿠키는 자동으로 관리되므로 클라이언트에서 가져올 필요 없음
     }
 
     // 실패한 응답 그대로 반환
     if (res.data.status === "error") {
-      //console.log("실패한 응답:", res.data);
-      return res.data; // 실패한 응답 그대로 반환
+      return res.data;
     }
   } catch {
-    // 그 외의 에러는 그대로 출력
-    // console.log(e);
     return { message: "알 수 없는 오류 발생", status: "error" };
   }
 };

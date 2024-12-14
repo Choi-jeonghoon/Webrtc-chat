@@ -5,6 +5,7 @@ const customAxios = axios.create({
   headers: {
     "Content-Type": "application/json; charset=utf-8",
   },
+  withCredentials: true, // 쿠키 자동 포함 설정
   timeout: 3000,
 });
 

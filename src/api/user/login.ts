@@ -1,16 +1,23 @@
 import customAxios from "..";
 
-interface LoginResponse {
-  message?: string; // 실패 시 메시지
-  errorCode?: number; // 실패 시 오류 코드
-  data?: {
-    accessToken: string;
-    refreshToken: string;
-  };
-  status: string;
+interface LoginResponseSuccess {
+  accessToken: string;
+  status: "success";
 }
 
-export const loginUser = async (email: string, password: string) => {
+interface LoginResponseError {
+  message: string;
+  errorCode?: number;
+  status: "error";
+}
+
+type LoginResponse = LoginResponseSuccess | LoginResponseError;
+
+//로그인 API
+export const login = async (
+  email: string,
+  password: string
+): Promise<LoginResponse | undefined> => {
   try {
     const credentials = `${email}:${password}`;
     const base64Credentials = btoa(credentials);
@@ -27,20 +34,49 @@ export const loginUser = async (email: string, password: string) => {
         validateStatus: (status) => {
           return (status >= 200 && status < 300) || status === 401;
         },
-        withCredentials: true, // 쿠키 자동 포함 설정
       }
     );
 
-    // 서버 응답에서 상태를 확인
     if (res.data.status === "success") {
-      return { status: "success" }; // 쿠키는 자동으로 관리되므로 클라이언트에서 가져올 필요 없음
+      const { accessToken } = res.data;
+      // 세션스토리지 -> 로컬스토리지로 변경
+      localStorage.setItem("accessToken", accessToken); // 변경된 부분
+
+      console.log(
+        "로컬스토리지에 저장된 액세스 토큰:",
+        localStorage.getItem("accessToken") // 변경된 부분
+      );
+
+      return { status: "success", accessToken };
     }
 
-    // 실패한 응답 그대로 반환
     if (res.data.status === "error") {
-      return res.data;
+      return res.data; // 에러 메시지 반환
     }
-  } catch {
+  } catch (error) {
+    console.error("로그인 오류:", error);
     return { message: "알 수 없는 오류 발생", status: "error" };
   }
 };
+
+// // 리프레쉬 토큰을 통해 액세스토큰 갱신 API
+// export const refreshAccessToken = async () => {
+//   try {
+//     const refreshToken = localStorage.getItem("refreshToken");
+//     if (!refreshToken) {
+//       throw new Error("리프레시 토큰이 없습니다.");
+//     }
+
+//     const response = await customAxios.post("/auth/refresh", {
+//       refreshToken,
+//     });
+
+//     // 새 액세스 토큰 저장
+//     const { accessToken } = response.data;
+//     localStorage.setItem("accessToken", accessToken);
+//     return accessToken;
+//   } catch (error) {
+//     console.error("리프레시 토큰 갱신 실패:", error);
+//     return null;
+//   }
+// };

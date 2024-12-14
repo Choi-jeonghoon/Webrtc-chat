@@ -4,3 +4,8 @@ export interface RegisterUserInput {
   phoneNumber: string;
   name: string;
 }
+
+export interface AuthState {
+  isAuthenticated: boolean;
+  token: string;
+}

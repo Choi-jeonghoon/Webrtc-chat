@@ -4,7 +4,7 @@ import Lottie from "lottie-react";
 import registerAnimation from "../../assets/Animation-register.json";
 import { useState } from "react";
 import useRegister from "../../hooks/auth/useRegister";
-import ConfirmModal from "../modal/ConfirmModall";
+import ConfirmModal from "../modal/ConfirmModal";
 import useEmailCheck from "../../hooks/user/useEmailCheck";
 import { useRecoilValue } from "recoil";
 import {

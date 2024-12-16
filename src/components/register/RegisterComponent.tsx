@@ -3,12 +3,46 @@ import CommonInput from "../common/CommonInput";
 import Lottie from "lottie-react";
 import registerAnimation from "../../assets/Animation-register.json";
 import { useState } from "react";
+import useRegister from "../../hooks/auth/useRegister";
+import ConfirmModal from "../modal/ConfirmModal";
+import useEmailCheck from "../../hooks/user/useEmailCheck";
+import { useRecoilValue } from "recoil";
+import {
+  isModalOpenState,
+  modalMessageState,
+} from "../../recoli/atoms/modalState";
+import useModalRedirect from "../../hooks/common/usecModal";
 
 const RegisterComponent = () => {
   const [isVerificationVisible, setVerificationVisible] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // 비밀번호 보이기 상태
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // 비밀번호 확인 보이기 상태
+
+  const {
+    name,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    phoneNumber,
+    setPhoneNumber,
+    handleRegister,
+    setIsModalOpen,
+  } = useRegister();
+
+  const { isButtonDisabled, isEmailValid, handleEmailCheck } = useEmailCheck();
+
+  const modalMessage = useRecoilValue(modalMessageState);
+  const isModalOpen = useRecoilValue(isModalOpenState);
+
+  // useModalRedirect 훅 호출하여 모달이 열리고 2초 후에 페이지를 이동
+  useModalRedirect(isModalOpen, modalMessage, () => {
+    setIsModalOpen(false); // 모달을 닫는 함수
+  });
 
   const handleSendVerification = () => {
     setVerificationVisible(true); // 인증번호 입력 필드 표시
@@ -73,6 +107,8 @@ const RegisterComponent = () => {
         <CommonInput
           type="text"
           placeholder="이름을 입력하세요"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           sx={{ mb: 3, width: "80%" }}
         />
         <Box
@@ -81,28 +117,47 @@ const RegisterComponent = () => {
           <CommonInput
             type="email"
             placeholder="이메일을 입력하세요"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={isButtonDisabled}
             sx={{ flex: 1, mr: 2 }}
           />
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => console.log("이메일 중복 체크")}
+            onClick={() => handleEmailCheck(email)}
+            disabled={isButtonDisabled}
             sx={{
               fontSize: "0.9rem",
               padding: "8px 16px",
-              background: "#4caf50",
+              background: isButtonDisabled
+                ? "#ccc" // 비활성화 상태는 회색 고정
+                : isEmailValid === false
+                ? "#f44336" // 유효하지 않은 이메일: 빨간색
+                : "#4caf50", // 기본 초록색
               "&:hover": {
-                background: "#388e3c",
+                background: isButtonDisabled
+                  ? undefined // 비활성화 상태에서는 hover 효과 없음
+                  : isEmailValid === false
+                  ? "#d32f2f" // 유효하지 않은 이메일: hover 빨간색
+                  : "#388e3c", // 기본 초록색 hover
               },
             }}
           >
-            중복 확인
+            {isEmailValid === true ? "사용 가능" : "중복 확인"}
           </Button>
+          <ConfirmModal
+            message={modalMessage}
+            open={isModalOpen}
+            // onClose={closeModal}
+          />
         </Box>
 
         <CommonInput
           type={showPassword ? "text" : "password"}
           placeholder="비밀번호를 입력하세요"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           showPasswordToggle={true}
           onClick={handleClickShowPassword}
           sx={{ mb: 3, width: "80%" }}
@@ -111,6 +166,8 @@ const RegisterComponent = () => {
         <CommonInput
           type={showConfirmPassword ? "text" : "password"}
           placeholder="비밀번호를 확인하세요"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           showPasswordToggle={true}
           onClick={handleClickShowConfirmPassword}
           sx={{ mb: 3, width: "80%" }}
@@ -122,6 +179,8 @@ const RegisterComponent = () => {
           <CommonInput
             type="tel"
             placeholder="전화번호를 입력하세요"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
             sx={{ flex: 1, mr: 2 }}
           />
           <Button
@@ -171,7 +230,7 @@ const RegisterComponent = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => console.log("회원가입")}
+          onClick={handleRegister}
           sx={{
             width: "80%",
             fontSize: "1rem",
@@ -184,6 +243,12 @@ const RegisterComponent = () => {
         >
           회원가입
         </Button>
+
+        <ConfirmModal
+          message={modalMessage}
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </Box>
     </Box>
   );

@@ -1,36 +1,43 @@
 import { useRecoilState } from "recoil";
+import { useEffect } from "react";
 import { authState } from "../../atoms/authAtom";
+import { useNavigate } from "react-router-dom";
 
+//  로그아웃 및 상태 복구 로직을 관리하는 커스텀 훅
 const useAuth = () => {
   const [auth, setAuth] = useRecoilState(authState);
+  const navigate = useNavigate();
 
-  const login = (token: string) => {
-    localStorage.setItem("userToken", token);
-    setAuth({ isAuthenticated: true, token });
-  };
-
-  const logout = () => {
-    localStorage.removeItem("userToken");
-    setAuth({ isAuthenticated: false, token: "" });
-  };
-
-  const initializeAuth = () => {
-    const userToken = localStorage.getItem("userToken");
-    // 임시 검증 로직
-    if (userToken === "OK") {
-      setAuth({ isAuthenticated: true, token: userToken });
+  // 세션에서 토큰 복구하여 상태 초기화
+  useEffect(() => {
+    const storedToken = localStorage.getItem("accessToken");
+    if (storedToken) {
+      setAuth({
+        isAuthenticated: true,
+        token: storedToken,
+      });
     } else {
-      setAuth({ isAuthenticated: false, token: "" });
+      setAuth({
+        isAuthenticated: false,
+        token: "",
+      });
     }
+  }, [setAuth]);
 
-    // if (userToken===???) {
-    //   setAuth({ isAuthenticated: true, token: userToken });
-    // } else {
-    //   setAuth({ isAuthenticated: false, token: "" });
-    // }
+  // 로그아웃 처리
+  const handleLogout = () => {
+    setAuth({
+      isAuthenticated: false,
+      token: "",
+    });
+    localStorage.removeItem("accessToken");
+    navigate("/"); // 홈으로 리디렉션
   };
 
-  return { auth, login, logout, initializeAuth };
+  return {
+    auth,
+    handleLogout,
+  };
 };
 
 export default useAuth;

@@ -7,7 +7,10 @@ interface CommonInputProps {
   placeholder: string;
   sx?: object;
   onClick?: () => void;
+  value?: string;
   showPasswordToggle?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
 const CommonInput = ({
@@ -16,6 +19,9 @@ const CommonInput = ({
   placeholder,
   sx,
   onClick,
+  value,
+  onChange,
+  disabled,
   showPasswordToggle = false,
 }: CommonInputProps) => {
   return (
@@ -24,6 +30,9 @@ const CommonInput = ({
       type={type}
       variant="outlined"
       placeholder={placeholder}
+      value={value} // value 적용
+      onChange={onChange} // onChange 핸들러 연결
+      disabled={disabled}
       sx={sx}
       slotProps={{
         input: {

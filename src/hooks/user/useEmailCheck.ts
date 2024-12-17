@@ -19,6 +19,15 @@ const useEmailCheck = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     // 이메일 형식이 올바른지 클라이언트에서 체크
+    if (!email) {
+      setIsEmailValid(false);
+      setIsModalOpen(true);
+      setModalMessage("이메일을 입력해주세요.");
+      console.log("이메일이 입력되지 않았음");
+      return; // 이메일이 비어 있으면 서버 요청을 보내지 않음
+    }
+
+    // 이메일 형식이 올바른지 클라이언트에서 체크
     if (!emailRegex.test(email)) {
       setIsEmailValid(false);
       setIsModalOpen(true);

@@ -2,7 +2,6 @@ import { Box, Button, Typography } from "@mui/material";
 import CommonInput from "../common/CommonInput";
 import Lottie from "lottie-react";
 import registerAnimation from "../../assets/Animation-register.json";
-import { useState } from "react";
 import useRegister from "../../hooks/auth/useRegister";
 import ConfirmModal from "../modal/ConfirmModal";
 import useEmailCheck from "../../hooks/user/useEmailCheck";
@@ -12,13 +11,25 @@ import {
   modalMessageState,
 } from "../../recoli/atoms/modalState";
 import useModalRedirect from "../../hooks/common/usecModal";
+import useHandle from "../../hooks/common/useHandle";
 
 const RegisterComponent = () => {
-  const [isVerificationVisible, setVerificationVisible] = useState(false);
-  const [verificationSent, setVerificationSent] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // 비밀번호 보이기 상태
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // 비밀번호 확인 보이기 상태
+  //모달 전역상태관리
+  const modalMessage = useRecoilValue(modalMessageState);
+  const isModalOpen = useRecoilValue(isModalOpenState);
+  // 간단한 핸들러 hook
+  const {
+    handleClickShowPassword,
+    handleClickShowConfirmPassword,
+    showPassword,
+    showConfirmPassword,
+    isVerificationVisible,
+    verificationSent,
+    handleSendVerification,
+    handleVerifyCode,
+  } = useHandle();
 
+  //회원가입 입력 hook
   const {
     name,
     setName,
@@ -34,33 +45,13 @@ const RegisterComponent = () => {
     setIsModalOpen,
   } = useRegister();
 
+  //이메일 중복 체크 hook
   const { isButtonDisabled, isEmailValid, handleEmailCheck } = useEmailCheck();
-
-  const modalMessage = useRecoilValue(modalMessageState);
-  const isModalOpen = useRecoilValue(isModalOpenState);
 
   // useModalRedirect 훅 호출하여 모달이 열리고 2초 후에 페이지를 이동
   useModalRedirect(isModalOpen, modalMessage, () => {
     setIsModalOpen(false); // 모달을 닫는 함수
   });
-
-  const handleSendVerification = () => {
-    setVerificationVisible(true); // 인증번호 입력 필드 표시
-    setVerificationSent(true); // 버튼 텍스트 변경
-    console.log("인증번호 발송");
-  };
-
-  const handleVerifyCode = () => {
-    console.log("인증번호 확인");
-  };
-
-  const handleClickShowPassword = () => {
-    setShowPassword((prev) => !prev);
-  };
-
-  const handleClickShowConfirmPassword = () => {
-    setShowConfirmPassword((prev) => !prev);
-  };
 
   return (
     <Box
